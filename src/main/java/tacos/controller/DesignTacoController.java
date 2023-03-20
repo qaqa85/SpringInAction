@@ -1,8 +1,10 @@
 package tacos.controller;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import tacos.models.Ingredient;
 import tacos.models.Ingredient.Type;
@@ -18,10 +20,10 @@ import static tacos.models.Ingredient.Type.*;
 @SessionAttributes("tacoOrder")
 @Controller
 @RequestMapping("/design")
-public class DesignTacoController {
+class DesignTacoController {
 
     @ModelAttribute
-    public void addIngredientsToModel(Model model) {
+    void addIngredientsToModel(Model model) {
         List<Ingredient> ingredients = Arrays.asList(
                 new Ingredient("FLTO", "Flour Tortilla", WRAP),
                 new Ingredient("COTO", "Corn Tortilla", WRAP),
@@ -44,25 +46,31 @@ public class DesignTacoController {
     }
 
     @ModelAttribute(name = "tacoOrder")
-    public TacoOrder order() {
+    TacoOrder order() {
         return new TacoOrder();
     }
 
     @ModelAttribute(name = "taco")
-    public Taco taco() {
+    Taco taco() {
         return new Taco();
     }
 
     @GetMapping
-    public String showDesignForm() {
+    String showDesignForm() {
         return "design";
     }
 
     @PostMapping
-    public String processTaco(Taco taco, @ModelAttribute TacoOrder tacoOrder) {
+    String processTaco(
+            @Valid Taco taco,
+            Errors errors,
+            @ModelAttribute TacoOrder tacoOrder) {
+        if (errors.hasErrors()) {
+            return "design";
+        }
+
         tacoOrder.addTaco(taco);
         log.info("Processing taco: {}", taco);
-
         return "redirect:/orders/current";
     }
 
