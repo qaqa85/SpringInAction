@@ -1,23 +1,23 @@
 package tacos.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.relational.core.mapping.Table;
+import lombok.NoArgsConstructor;
 
 @Data
-@Table(name = "INGREDIENT")
-public class Ingredient implements Persistable<String> {
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
+@Table(name = "Ingredient")
+public class Ingredient {
     @Id
-    private final String id;
-    private final String name;
-    private final Type type;
-
-    @Override
-    public boolean isNew() {
-        return true;
-    }
-
+    private String id;
+    private String name;
+    private Type type;
 
     public enum Type {
         WRAP,
