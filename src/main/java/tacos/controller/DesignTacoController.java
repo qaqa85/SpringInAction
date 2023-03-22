@@ -1,6 +1,7 @@
 package tacos.controller;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,9 +11,12 @@ import tacos.models.Ingredient;
 import tacos.models.Ingredient.Type;
 import tacos.models.Taco;
 import tacos.models.TacoOrder;
+import tacos.repository.IngredientRepository;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 import static tacos.models.Ingredient.Type.*;
 
@@ -20,27 +24,16 @@ import static tacos.models.Ingredient.Type.*;
 @SessionAttributes("tacoOrder")
 @Controller
 @RequestMapping("/design")
+@RequiredArgsConstructor
 class DesignTacoController {
+    private final IngredientRepository ingredientRepository;
 
     @ModelAttribute
     void addIngredientsToModel(Model model) {
-        List<Ingredient> ingredients = Arrays.asList(
-                new Ingredient("FLTO", "Flour Tortilla", WRAP),
-                new Ingredient("COTO", "Corn Tortilla", WRAP),
-                new Ingredient("GRBF", "Ground Beef", PROTEIN),
-                new Ingredient("CARN", "Carnitas", PROTEIN),
-                new Ingredient("TMTO", "Diced Tomatoes", VEGGIES),
-                new Ingredient("LETC", "Lettuce", VEGGIES),
-                new Ingredient("CHED", "Cheddar", CHEESE),
-                new Ingredient("JACK", "Monterrey Jack", CHEESE),
-                new Ingredient("SLSA", "Salsa", SAUCE),
-                new Ingredient("SRCR", "Sour Cream", SAUCE)
-        );
-
+        Iterable<Ingredient> ingredients = ingredientRepository.findAll();
         Type[] types = Ingredient.Type.values();
         for (Type type : types) {
-            model.addAttribute(
-                    type.toString().toLowerCase(),
+            model.addAttribute(type.toString().toLowerCase(),
                     filterByType(ingredients, type));
         }
     }
@@ -74,10 +67,11 @@ class DesignTacoController {
         return "redirect:/orders/current";
     }
 
-    private Iterable<Ingredient> filterByType(List<Ingredient> ingredients, Type type) {
-        return ingredients
-                .stream()
-                .filter(ingredient -> ingredient.getType() == type)
+    private Iterable<Ingredient> filterByType(Iterable<Ingredient> ingredients, Type type) {
+        Iterator<Ingredient> iterator = ingredients.iterator();
+
+        return StreamSupport.stream(ingredients.spliterator(), false)
+                .filter(ingredient -> ingredient.getType().equals(type))
                 .toList();
     }
 }
