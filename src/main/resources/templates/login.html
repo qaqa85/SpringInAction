@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Taco Cloud</title>
+</head>
+<body>
+<img th:src="@{/images/TacoCloud.png}"/>
+<h1>Please login:</h1>
+
+<p>First time? <a th:href="@{/register}">Click here!</a></p>
+
+<form method="POST" id="postForm">
+    <label for="username">Username: </label><br/>
+    <input id="username" name="username" type="text" placeholder="username"><br/><br/>
+
+    <label for="password">Password: </label><br/>
+    <input id="password" name="password" type="password" placeholder="password"><br/><br/>
+
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+
+    <button type="submit">Submit</button>
+</form>
+
+</body>
+</html>

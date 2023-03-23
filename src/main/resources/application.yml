@@ -2,4 +2,4 @@ spring:
   datasource:
     generate-unique-name: false
     name: tacocloud
-
+    url: jdbc:h2:mem:tacocloud;NON_KEYWORDS=USER
