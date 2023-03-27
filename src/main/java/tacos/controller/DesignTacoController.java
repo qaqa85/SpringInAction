@@ -3,6 +3,8 @@ package tacos.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -13,12 +15,8 @@ import tacos.models.Taco;
 import tacos.models.TacoOrder;
 import tacos.repository.IngredientRepository;
 
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 import java.util.stream.StreamSupport;
-
-import static tacos.models.Ingredient.Type.*;
 
 @Slf4j
 @SessionAttributes("tacoOrder")
@@ -49,7 +47,7 @@ class DesignTacoController {
     }
 
     @GetMapping
-    String showDesignForm() {
+    String showDesignForm(@AuthenticationPrincipal OAuth2User principal) {
         return "design";
     }
 
@@ -57,7 +55,8 @@ class DesignTacoController {
     String processTaco(
             @Valid Taco taco,
             Errors errors,
-            @ModelAttribute TacoOrder tacoOrder) {
+            @ModelAttribute TacoOrder tacoOrder
+    ) {
         if (errors.hasErrors()) {
             return "design";
         }

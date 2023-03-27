@@ -2,6 +2,8 @@ package tacos.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,9 +13,12 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 import tacos.security.user.repository.UserRepository;
 
+import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 @Configuration
+@EnableMethodSecurity
+@EnableGlobalAuthentication
 public class SecurityConfig {
     @Bean
     PasswordEncoder passwordEncoder() {
@@ -32,16 +37,33 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         matcher -> matcher
                                 .requestMatchers(antMatcher("/design"), antMatcher("/orders/**"))
-                                .access(new WebExpressionAuthorizationManager("hasRole('USER')"))
-                                .requestMatchers(antMatcher("/login"), antMatcher("/**"))
+                                .access(new WebExpressionAuthorizationManager(
+                                        "hasRole('USER') or hasAuthority('OAUTH2_USER')"))
+                                .requestMatchers(
+                                        antMatcher("/login"),
+                                        antMatcher("/**"),
+                                        toH2Console()
+                                )
                                 .access(new WebExpressionAuthorizationManager("permitAll"))
-                                .anyRequest().permitAll()
+                                .anyRequest().authenticated()
                 )
-                .formLogin(
+                .headers(
+                        headers -> headers.frameOptions().disable()
+                )
+                .csrf().ignoringRequestMatchers(antMatcher("/h2-console/**")).and()
+                .oauth2Login(
+                        oath2 -> oath2
+                                .loginPage("/login")
+                                .defaultSuccessUrl("/design", true)
+                ).formLogin(
                         form -> form
                                 .loginPage("/login")
                                 .defaultSuccessUrl("/design", true)
                 )
+                .logout(
+                        logout -> logout.logoutSuccessUrl("/")
+                )
+
                 .build();
     }
 }

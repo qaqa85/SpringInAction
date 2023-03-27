@@ -3,3 +3,14 @@ spring:
     generate-unique-name: false
     name: tacocloud
     url: jdbc:h2:mem:tacocloud;NON_KEYWORDS=USER
+  security:
+    oauth2:
+      client:
+        registration:
+          facebook:
+            clientId: ${FACEBOOK_ID}
+            clientSecret: ${FACEBOOK_SECRET}
+            scope: email, public_profile
+server:
+  error:
+    include-stacktrace: never

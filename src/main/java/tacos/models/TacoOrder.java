@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.CreditCardNumber;
+import tacos.security.user.models.User;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -39,6 +40,8 @@ public class TacoOrder implements Serializable {
     private String ccCVV;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Taco> tacos = new ArrayList<>();
+    @ManyToOne
+    private User user;
 
     public void addTaco(Taco taco) {
         this.tacos.add(taco);
