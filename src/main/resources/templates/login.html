@@ -9,6 +9,10 @@
 
 <p>First time? <a th:href="@{/register}">Click here!</a></p>
 
+<div class="validationError" th:if="${error}">
+    Unable to login. Check your username and password.
+</div>
+
 <form method="POST" id="postForm">
     <label for="username">Username: </label><br/>
     <input id="username" name="username" type="text" placeholder="username"><br/><br/>

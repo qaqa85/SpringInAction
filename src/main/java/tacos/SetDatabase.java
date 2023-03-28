@@ -1,17 +1,18 @@
 package tacos;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import tacos.models.Ingredient;
-import tacos.models.Ingredient.Type;
+import org.springframework.context.annotation.Profile;
+import tacos.orders.models.Ingredient;
+import tacos.orders.models.Ingredient.Type;
 import tacos.repository.IngredientRepository;
 
 @Configuration
+@Profile("!prod")
 public class SetDatabase {
     @Bean
-    ApplicationRunner dateLoader(@Autowired IngredientRepository ingredientRepository) {
+    ApplicationRunner dateLoader(IngredientRepository ingredientRepository) {
         return args -> {
             ingredientRepository.save(new Ingredient("FLTO", "Flour Tortilla", Type.WRAP));
             ingredientRepository.save(new Ingredient("COTO", "Corn Tortilla", Type.WRAP));

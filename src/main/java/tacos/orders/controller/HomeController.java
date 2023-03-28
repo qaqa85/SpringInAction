@@ -1,4 +1,4 @@
-package tacos.controller;
+package tacos.orders.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;

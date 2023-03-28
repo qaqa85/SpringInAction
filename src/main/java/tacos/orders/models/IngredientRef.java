@@ -1,4 +1,4 @@
-package tacos.models;
+package tacos.orders.models;
 
 import lombok.Data;
 

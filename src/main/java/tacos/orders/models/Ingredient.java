@@ -1,4 +1,4 @@
-package tacos.models;
+package tacos.orders.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

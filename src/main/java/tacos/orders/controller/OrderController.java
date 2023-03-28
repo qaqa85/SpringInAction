@@ -1,27 +1,34 @@
-package tacos.controller;
+package tacos.orders.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
-import tacos.exceptions.OrderNotFoundException;
-import tacos.models.TacoOrder;
+import tacos.orders.controller.configurator.OrderSizeProps;
+import tacos.orders.exceptions.OrderNotFoundException;
+import tacos.orders.models.TacoOrder;
 import tacos.repository.OrderRepository;
 import tacos.security.user.models.User;
 
 @Controller
 @Slf4j
 @RequiredArgsConstructor
+@ConfigurationProperties(prefix = "taco.orders")
 @RequestMapping("/orders")
 @SessionAttributes("tacoOrder")
 class OrderController {
     private final OrderRepository orderRepository;
+    private final OrderSizeProps orderSizeProps;
 
     @GetMapping("/current")
     String orderForm() {
@@ -42,13 +49,13 @@ class OrderController {
 
         log.info("Order submitted: {}", order);
         sessionStatus.setComplete();
-        return "redirect:/";
+        return "redirect:/orders";
     }
 
     @PostAuthorize("hasRole('ADMIN') or " +
             "returnObject.user.username == authentication.name")
     @GetMapping("/{id}")
-    @ResponseBody TacoOrder getOrder(@PathVariable long id, @AuthenticationPrincipal User user) {
+    @ResponseBody TacoOrder getOrder(@PathVariable long id) {
         return orderRepository.findById(id)
                 .orElseThrow(OrderNotFoundException::new);
     }
@@ -57,5 +64,16 @@ class OrderController {
     @PostMapping("/admin")
     void deleteAllOrders() {
         orderRepository.deleteAll();
+    }
+
+    @GetMapping
+    @PreAuthorize("hasRole('USER')")
+    String ordersFromUser(@AuthenticationPrincipal User user, Model model) {
+
+        Pageable pageable = PageRequest.of(0, orderSizeProps.getPageSize());
+        model.addAttribute("orders", orderRepository.findByUserOrderByPlacedAtDesc(user, pageable));
+        model.addAttribute("username", user.getUsername());
+
+        return "orderList";
     }
 }

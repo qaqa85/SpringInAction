@@ -3,6 +3,11 @@ spring:
     generate-unique-name: false
     name: tacocloud
     url: jdbc:h2:mem:tacocloud;NON_KEYWORDS=USER
+    hikari:
+      schema:
+      - customSchema.sql
+  jpa:
+    show-sql: true
   security:
     oauth2:
       client:
@@ -14,3 +19,15 @@ spring:
 server:
   error:
     include-stacktrace: never
+  port: 8443
+  ssl:
+    key-store: src/main/resources/mykeys.jks
+    key-store-password: ${HTTPS_PASSWORD}
+    key-password: ${HTTPS_PASSWORD}
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+taco:
+  orders:
+    pageSize: 10

@@ -1,4 +1,4 @@
-package tacos.controller;
+package tacos.orders.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -9,10 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import tacos.models.Ingredient;
-import tacos.models.Ingredient.Type;
-import tacos.models.Taco;
-import tacos.models.TacoOrder;
+import tacos.orders.models.Ingredient;
+import tacos.orders.models.Ingredient.Type;
+import tacos.orders.models.Taco;
+import tacos.orders.models.TacoOrder;
 import tacos.repository.IngredientRepository;
 
 import java.util.Iterator;

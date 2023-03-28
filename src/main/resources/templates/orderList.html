@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Taco Cloud</title>
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
+</head>
+<body>
+<h1 th:text="${username} + ' ' + order">Username orders</h1>
+<img th:src="@{images/TacoCloud.png}"/>
+<ul>
+    <li class="flex gap-row-10" th:each="order : ${orders}">
+        <div th:text="${order.id} + .">1.</div>
+        <div>Placed at: <span th:text="${order.placedAt}">placed at..</span></div>
+        <div>Delivery name: <span th:text="${order.deliveryName}">delivery name..</span></div>
+        <div>Delivery street: <span th:text="${order.deliveryStreet}">delivery street..</span></div>
+        <div>Delivery state: <span th:text="${order.deliveryState}">delivery state..</span></div>
+        <div>Delivery zip: <span th:text="${order.deliveryZip}">delivery zip..</span></div>
+    </li>
+</ul>
+<form method="GET" th:action="@{/design}">
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+    <button type="submit" th:href="@{/design}">Back to order creator</button>
+</form>
+</body>
+</html>

@@ -27,3 +27,12 @@ div.ingredient-group {
 span.validationError {
 	color: red;
 }
+
+.flex {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.gap-row-10 {
+    column-gap: 15px
+}
