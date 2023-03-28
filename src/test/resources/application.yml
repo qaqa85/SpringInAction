@@ -19,14 +19,14 @@ spring:
             clientId: ${FACEBOOK_ID}
             clientSecret: ${FACEBOOK_SECRET}
             scope: email, public_profile
-server:
-  error:
-    include-stacktrace: never
-  port: 8443
-  ssl:
-    key-store: src/main/resources/mykeys.jks
-    key-store-password: ${HTTPS_PASSWORD}
-    key-password: ${HTTPS_PASSWORD}
+#server:
+#  error:
+#    include-stacktrace: never
+#  port: 8443
+#  ssl:
+#    key-store: src/main/resources/mykeys.jks
+#    key-store-password: ${HTTPS_PASSWORD}
+#    key-password: ${HTTPS_PASSWORD}
 logging:
   level:
     org.hibernate.SQL: DEBUG

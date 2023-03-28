@@ -1,4 +1,4 @@
-package tacos.orders.controller.configurator;
+package tacos.orders.controllerMCV.configurator;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

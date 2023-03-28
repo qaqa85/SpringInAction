@@ -1,14 +1,17 @@
-package tacos.orders.models;
+package tacos.taco;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.springframework.data.rest.core.annotation.RestResource;
+import tacos.orders.models.Ingredient;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Data
+@RestResource(rel = "tacos", path = "tacos")
 @Entity
 public class Taco {
     @Id

@@ -1,4 +1,4 @@
-package tacos.orders.controller;
+package tacos.orders.controllerMCV;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -14,10 +14,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
-import tacos.orders.controller.configurator.OrderSizeProps;
+import tacos.orders.controllerMCV.configurator.OrderSizeProps;
 import tacos.orders.exceptions.OrderNotFoundException;
-import tacos.orders.models.TacoOrder;
-import tacos.repository.OrderRepository;
+import tacos.tacoOrder.TacoOrder;
+import tacos.tacoOrder.TacoOrderRepository;
 import tacos.security.user.models.User;
 
 @Controller
@@ -27,7 +27,7 @@ import tacos.security.user.models.User;
 @RequestMapping("/orders")
 @SessionAttributes("tacoOrder")
 class OrderController {
-    private final OrderRepository orderRepository;
+    private final TacoOrderRepository orderRepository;
     private final OrderSizeProps orderSizeProps;
 
     @GetMapping("/current")
@@ -50,14 +50,6 @@ class OrderController {
         log.info("Order submitted: {}", order);
         sessionStatus.setComplete();
         return "redirect:/orders";
-    }
-
-    @PostAuthorize("hasRole('ADMIN') or " +
-            "returnObject.user.username == authentication.name")
-    @GetMapping("/{id}")
-    @ResponseBody TacoOrder getOrder(@PathVariable long id) {
-        return orderRepository.findById(id)
-                .orElseThrow(OrderNotFoundException::new);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

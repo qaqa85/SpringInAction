@@ -2,6 +2,7 @@ package tacos.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -50,7 +51,7 @@ public class SecurityConfig {
                 .headers(
                         headers -> headers.frameOptions().disable()
                 )
-                .csrf().ignoringRequestMatchers(antMatcher("/h2-console/**")).and()
+                .csrf().ignoringRequestMatchers(antMatcher("/h2-console/**"), antMatcher("/data-api/**")).and()
                 .oauth2Login(
                         oath2 -> oath2
                                 .loginPage("/login")
