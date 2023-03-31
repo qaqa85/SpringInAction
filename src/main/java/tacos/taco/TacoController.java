@@ -6,12 +6,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tacos.tacoOrder.TacoOrder;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/api/v1/tacos", produces = "application/json")
-@CrossOrigin(origins = "http://tacocloud:8080")
+@CrossOrigin(origins = {"http://tacocloud:8080", "http://localhost:8080"})
 class TacoController {
     private final TacoRepository tacoRepository;
 

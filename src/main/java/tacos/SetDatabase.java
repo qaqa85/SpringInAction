@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import tacos.orders.models.Ingredient;
 import tacos.orders.models.Ingredient.Type;
-import tacos.repository.IngredientRepository;
+import tacos.ingredient.IngredientRepository;
 import tacos.taco.Taco;
 import tacos.taco.TacoRepository;
 

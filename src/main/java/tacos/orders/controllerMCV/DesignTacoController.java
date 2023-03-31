@@ -13,7 +13,7 @@ import tacos.orders.models.Ingredient;
 import tacos.orders.models.Ingredient.Type;
 import tacos.taco.Taco;
 import tacos.tacoOrder.TacoOrder;
-import tacos.repository.IngredientRepository;
+import tacos.ingredient.IngredientRepository;
 
 import java.util.Iterator;
 import java.util.stream.StreamSupport;

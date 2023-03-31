@@ -19,6 +19,9 @@ spring:
             clientId: ${FACEBOOK_ID}
             clientSecret: ${FACEBOOK_SECRET}
             scope: email, public_profile
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:9000/oauth2/jwks
 server:
   error:
     include-stacktrace: never
