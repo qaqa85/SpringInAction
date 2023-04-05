@@ -4,9 +4,9 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import tacos.ingredient.IngredientRepository;
 import tacos.orders.models.Ingredient;
 import tacos.orders.models.Ingredient.Type;
-import tacos.ingredient.IngredientRepository;
 import tacos.taco.Taco;
 import tacos.taco.TacoRepository;
 
@@ -15,6 +15,7 @@ import java.util.List;
 @Configuration
 @Profile("!prod")
 public class SetDatabase {
+
     @Bean
     ApplicationRunner dateLoader(IngredientRepository ingredientRepository,
                                  TacoRepository tacoRepository) {

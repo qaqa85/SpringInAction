@@ -1,0 +1,61 @@
+version: "3.9"
+services:
+#  activeMq:
+#    environment:
+#      AMQ_USER: admin
+#      AMQ_PASSWORD: admin
+#      AMQ_EXTRA_ARGS: "--host 0.0.0.0 --http-host 0.0.0.0 --relax-jolokia"
+#    ports:
+#      - "8161:8161"
+#      - "61616:61616"
+#    container_name: activeMq-taco
+#    image: quay.io/artemiscloud/activemq-artemis-broker:dev.latest
+#  rabbitMq:
+#    image: rabbitmq:3.10.20-management-alpine
+#    environment:
+#      RABBITMQ_DEFAULT_PASS: admin
+#      RABBITMQ_DEFAULT_USER: admin
+#    ports:
+#      - "5672:5672"
+#      - "15672:15672"
+#    container_name: rabbitMq-taco
+  zookeeper:
+    image: zookeeper
+    restart: always
+    container_name: zookeeper
+    hostname: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOO_MY_ID: 1
+    networks:
+      - kafka_network
+  kafka:
+    image: wurstmeister/kafka
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: PLAINTEXT://kafka:9092
+    networks:
+      - kafka_network
+  kafka_manager:
+    image: hlebalbau/kafka-manager:stable
+    container_name: kakfa-manager
+    restart: always
+    ports:
+      - "9000:9000"
+    depends_on:
+      - zookeeper
+      - kafka
+    environment:
+      ZK_HOSTS: "zookeeper:2181"
+      APPLICATION_SECRET: "random-secret"
+    command: -Dpidfile.path=/dev/null
+    networks:
+      - kafka_network
+networks:
+  kafka_network:
+    driver: bridge

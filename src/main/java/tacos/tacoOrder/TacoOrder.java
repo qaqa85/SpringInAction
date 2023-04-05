@@ -1,10 +1,12 @@
 package tacos.tacoOrder;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.validator.constraints.CreditCardNumber;
 import tacos.security.user.models.User;
 import tacos.taco.Taco;
@@ -16,6 +18,7 @@ import java.util.List;
 
 @Data
 @Entity
+@ToString
 @Table(name = "taco_order")
 public class TacoOrder implements Serializable {
     static final long serialVersionUID = 1L;
@@ -42,6 +45,7 @@ public class TacoOrder implements Serializable {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Taco> tacos = new ArrayList<>();
     @ManyToOne
+    @JsonIgnore
     private User user;
 
     public void addTaco(Taco taco) {

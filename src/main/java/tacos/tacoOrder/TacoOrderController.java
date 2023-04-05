@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tacos.orders.exceptions.OrderNotFoundException;
+import tacos.tacoOrder.service.OrderMessagingService;
 
 import java.util.Objects;
 
@@ -14,6 +16,7 @@ import java.util.Objects;
 @RequestMapping("api/v1/orders")
 public class TacoOrderController {
     private final TacoOrderRepository tacoOrderRepository;
+    private final OrderMessagingService messagingService;
 
     @PostAuthorize("hasRole('ADMIN') or " +
             "returnObject.user.username == authentication.name")
@@ -68,5 +71,19 @@ public class TacoOrderController {
         try {
             tacoOrderRepository.deleteById(orderId);
         } catch (EmptyResultDataAccessException ignored) {}
+    }
+
+    @PostMapping(consumes = "application/json")
+    @PreAuthorize("permitAll")
+    @ResponseStatus(HttpStatus.CREATED)
+    TacoOrder postOrder(@RequestBody TacoOrder order) {
+        messagingService.sendOrder(order);
+        return tacoOrderRepository.save(order);
+    }
+
+    @PreAuthorize("permitAll")
+    @GetMapping("/rabbitMq")
+    TacoOrder getMessage() {
+        return messagingService.receiveMessage();
     }
 }

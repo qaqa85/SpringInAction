@@ -1,4 +1,11 @@
 spring:
+  profiles:
+    active:
+      - kafkamq
+      - dev
+#  jackson:
+#    serialization:
+#      write_dates_as_timestamps: false
   data:
     rest:
       base-path: /data-api
@@ -30,10 +37,12 @@ server:
     key-store: src/main/resources/mykeys.jks
     key-store-password: ${HTTPS_PASSWORD}
     key-password: ${HTTPS_PASSWORD}
-logging:
-  level:
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+#logging:
+#  level:
+#    org.hibernate.SQL: DEBUG
+#    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 taco:
   orders:
     pageSize: 10
+
+
