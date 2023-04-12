@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.rest.core.annotation.RestResource;
 import tacos.orders.models.Ingredient;
 
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Data
 @RestResource(rel = "tacos", path = "tacos")
+@NoArgsConstructor
 @Entity
 public class Taco {
     @Id
@@ -30,4 +32,8 @@ public class Taco {
         inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )
     private List<Ingredient> ingredients;
+
+    public Taco(String name) {
+        this.name = name;
+    }
 }

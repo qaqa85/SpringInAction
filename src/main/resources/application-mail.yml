@@ -1,0 +1,7 @@
+tacocloud:
+  email:
+    host: imap.gmail.com
+    username: ${GMAIL_USERNAME}
+    password:  ${GMAIL_APP_PASSWORD}
+    mailbox: INBOX
+    pool-rate: 10000

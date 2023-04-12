@@ -3,5 +3,30 @@
     "name": "taco.orders.page-size",
     "type": "java.lang.Integer",
     "description": "Sets the maximum number of orders to display in a list."
+  },
+  {
+    "name": "tacocloud.email.username",
+    "type": "java.lang.String",
+    "description": "Sets the IMAP username"
+  },
+  {
+    "name": "tacocloud.email.password",
+    "type": "java.lang.String",
+    "description": "Sets the IMAP password"
+  },
+  {
+    "name": "tacocloud.email.mailbox",
+    "type": "java.lang.String",
+    "description": "Sets the IMAP mailbox"
+  },
+  {
+    "name": "tacocloud.email.host",
+    "type": "java.lang.String",
+    "description": "Sets the IMAP host"
+  },
+  {
+    "name": "tacocloud.email.pool-rate",
+    "type": "java.lang.Long",
+    "description": "Sets the pool-rate"
   }
 ]}
