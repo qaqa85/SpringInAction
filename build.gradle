@@ -29,6 +29,8 @@ dependencies {
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.4'
 	implementation 'org.springframework.boot:spring-boot-starter-integration'
 	implementation 'org.springframework.integration:spring-integration-mail'
+	implementation 'io.projectreactor:reactor-core'
+	testImplementation 'io.projectreactor:reactor-test'
 	implementation 'com.sun.mail:jakarta.mail:2.0.1'
 	implementation group: 'org.apache.commons', name: 'commons-text', version: '1.10.0'
 	testImplementation 'junit:junit:4.13.1'
